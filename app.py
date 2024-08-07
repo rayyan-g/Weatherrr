@@ -1,0 +1,29 @@
+from flask import Flask , render_template,request
+import requests
+app=Flask(__name__)
+# one call api
+@app.route("/")
+def hamepage():
+    return render_template("index.html")
+# it will render the html page at what route it should route as given above
+
+@app.route("/weatherapp",methods=['POST',"GET"])
+def get_wheatherdata():
+    
+    url = "https://api.openweathermap.org/data/2.5/weather"
+    param={
+        'q':request.form.get("city"),
+        'appid': request.form.get("appid"),
+        'units': request.form.get("units")}
+    response = requests.get(url,params=param)
+    data = response.json()
+    return f"Data: {data}"
+# this all already taught in lab templates api projects
+
+
+
+
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0')
+# First step done next step is to deploy this code into cloud
